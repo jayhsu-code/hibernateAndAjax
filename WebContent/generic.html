@@ -1,0 +1,299 @@
+<!DOCTYPE HTML>
+<!--
+	Intensify by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+<head>
+<title>口罩剩餘數量查詢</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="subpage">
+
+	<!-- Header -->
+	<header id="header">
+		<nav class="left">
+			<a href="#menu"><span>Menu</span></a>
+		</nav>
+		<a href="index.html" class="logo">MasksQuery</a>
+		<nav class="right" id="loginout"></nav>
+
+	</header>
+
+	<!-- Menu -->
+	<nav id="menu">
+		<ul class="links">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="generic.html">口罩剩餘數量查詢</a></li>
+
+		</ul>
+		<ul class="actions vertical">
+
+		</ul>
+	</nav>
+
+	<!-- Main -->
+	<section id="main" class="wrapper">
+
+		<table style="border: 1px solid gray" id="showdiv"></table>
+		<table id="page"></table>
+		<div id="msg"></div>
+		<table>
+
+			<tr>
+				
+				<td><input type="text" name="city" id="city"
+					placeholder="請輸入你的地區">
+				<td><button id="query">查詢</button>
+		</table>
+
+
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer">
+		<div class="inner">
+			<h2>Get In Touch</h2>
+			<ul class="actions">
+				<li><span class="icon fa-phone"></span> <a href="#">(000)
+						000-0000</a></li>
+				<li><span class="icon fa-envelope"></span> <a href="#">information@untitled.tld</a></li>
+				<li><span class="icon fa-map-marker"></span> 123 Somewhere
+					Road, Nashville, TN 00000</li>
+			</ul>
+		</div>
+		<div class="copyright">
+			&copy; Untitled. Design <a href="https://templated.co">TEMPLATED</a>.
+			Images <a href="https://unsplash.com">Unsplash</a>.
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/skel.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+	<script
+		src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script type="text/javascript">
+	var date1
+	$("#query").click(function(){
+			
+		if ($.cookie("name") == "null") { 
+			alert("請登入再做查詢")
+			window.location.href="login/login.html"
+		}else{
+		date1=$("#city").val()
+	$.post("querycity",
+			{"city":date1},
+			function(data,status){
+					if(status=="success")
+						$("#showdiv").empty()
+						datas=JSON.parse(data)
+						var page
+						if(datas.length>20)
+							{
+						page=datas.length/20;}
+						else {page=1}
+						var txt = "<tr><th>醫院編碼<th>醫院名稱<th>醫院位置<th><醫院剩餘口罩><th>預約";
+						for (var i=0;i<(datas.length/page);i++){
+						txt+="<tr><td>"+datas[i].id;
+						txt+="<td>"+datas[i].hospitalName;
+						txt+="<td>"+datas[i].hospitalAddress;
+						txt+="<td>"+datas[i].MaskOfAdult;
+						if($.cookie("order")=="null"|| $.cookie("order")==undefined){
+							if(datas[i].MaskOfAdult==0){txt+="<td>已售完"}
+							else{txt+="<td><button onclick=order("+datas[i].id+")>預約</button>"}
+						
+						}else{
+							console.log(datas[i].id+" "+$.cookie("order"))
+							if(datas[i].id==$.cookie("order"))
+								txt+="<td><button onclick='cancel("+$.cookie("order")+")'>取消預約</button>"
+							else txt+="<td>已預約"
+							}
+							}
+						
+						$("#showdiv").html(txt)
+						var text="<tr>"
+						
+						for(var j=0;j<page;j++){
+							text+="<td><a href='#' onclick='clickpage("+(j+1)+")'>"+(j+1)+"</a>"
+							}
+						$("#page").html(text)
+				})
+				
+		}
+		
+		})
+	
+		function clickpage(pag){
+		var a
+		var b
+		if(pag<2)
+		{	 a=pag*20
+			 b=a-20}
+		
+		else
+			{
+			
+				b=(pag-1)*20
+				if(datas.length-b<20){
+					a=datas.length
+	
+				}else {
+					a=b+20
+					
+					}
+			}
+			
+				var tx1t = "<tr><th>醫院名稱<th>醫院位置<th><醫院剩餘口罩><th>預約";
+				$("#showdiv").empty()
+			
+			for (var i=b;i<a;i++){
+				tx1t+="<tr><td>"+datas[i].id;
+				tx1t+="<td>"+datas[i].hospitalName;
+				tx1t+="<td>"+datas[i].hospitalAddress;
+				tx1t+="<td>"+datas[i].MaskOfAdult;
+				if($.cookie("order")=="null"|| $.cookie("order")==undefined){
+					if(datas[i].MaskOfAdult==0){tx1t+="<td>已售完"}
+					else{tx1t+="<td><button onclick=order("+datas[i].id+")>預約</button>"}
+				
+				
+					}else{
+						if(datas[i].id==$.cookie("order"))
+							tx1t+="<td><button onclick='cancel("+$.cookie("order")+")'>取消預約</button>"
+						else tx1t+="<td>已預約"
+						}
+			
+				}
+				$("#showdiv").html(tx1t)
+			}
+if($.cookie("name")!="null")
+	{
+	
+	$("#loginout").html("<img src='images/pic01.jpg' width='30'>"+"<span>hi ! "+$.cookie("name")+"<a href='login/edit.html'>(修改)</a>"+" </span>"+"<a href='#' id='loginexit' class='button alt'>Log out</a>")
+	}else{
+		$("#loginout").html("<a href='login/login.html' class='button alt'>Log in</a>")
+		
+		}
+$("#loginexit").click(function(){
+	$.cookie("name","null")
+	alert("已登出")
+	window.location.href="login/login.html"
+	})
+	
+	function order(i){
+	$.ajax({
+		url:"MasksOrder",
+		type:"post",
+		data:{
+				"id":i
+				},
+	success:function(data){
+		if (eval(data)){
+			$.cookie("order",i,{expires:7,path:"/secondThematic"})
+			alert("預約成功")
+			}
+		$.post("querycity",
+				{"city":date1},
+				function(data,status){
+						if(status=="success")
+							$("#showdiv").empty()
+							datas=JSON.parse(data)
+							var page
+							if(datas.length>20)
+								{
+							page=datas.length/20;}
+							else {page=1}
+							var txt = "<tr><th>醫院編碼<th>醫院名稱<th>醫院位置<th><醫院剩餘口罩><th>預約";
+							for (var i=0;i<(datas.length/page);i++){
+							txt+="<tr><td>"+datas[i].id;
+							txt+="<td>"+datas[i].hospitalName;
+							txt+="<td>"+datas[i].hospitalAddress;
+							txt+="<td>"+datas[i].MaskOfAdult;
+							if($.cookie("order")=="null"){
+								if(datas[i].MaskOfAdult==0){txt+="<td>已售完"}
+								else{txt+="<td><button onclick=order("+datas[i].id+")>預約</button>"}
+							
+							}
+							else{
+								if(datas[i].id==$.cookie("order"))
+									txt+="<td><button onclick='cancel("+$.cookie("order")+")'>取消預約</button>"
+								else txt+="<td>已預約"
+								}
+								}
+							
+							$("#showdiv").html(txt)
+							var text="<tr>"
+							
+							for(var j=0;j<page;j++){
+								text+="<td><a href='#' onclick='clickpage("+(j+1)+")'>"+(j+1)+"</a>"
+								}
+							$("#page").html(text)
+					})
+		}
+		
+		
+		}) 
+	}
+	function cancel(date){
+		$.ajax({
+			url:"cancelMask",
+			type:"post",
+			data:{
+					"id":date
+					},
+		success:function(data){
+			if (eval(data)){
+				$.cookie("order","null")
+				alert("已取消預約")
+				}
+			$.post("querycity",
+					{"city":date1},
+					function(data,status){
+							if(status=="success")
+								$("#showdiv").empty()
+								datas=JSON.parse(data)
+								var page
+								if(datas.length>20)
+									{
+								page=datas.length/20;}
+								else {page=1}
+								var txt = "<tr><th>醫院編碼<th>醫院名稱<th>醫院位置<th><醫院剩餘口罩><th>預約";
+								for (var i=0;i<(datas.length/page);i++){
+								txt+="<tr><td>"+datas[i].id;
+								txt+="<td>"+datas[i].hospitalName;
+								txt+="<td>"+datas[i].hospitalAddress;
+								txt+="<td>"+datas[i].MaskOfAdult;
+								if($.cookie("order")=="null" || $.cookie("order")==undefined){
+								txt+="<td><button onclick=order("+datas[i].id+")>預約</button>"
+								}else{
+									if(datas[i].id==$.cookie("order"))
+										txt+="<td><button onclick='cancel("+$.cookie("order")+")'>取消預約</button>"
+									else txt+="<td>已預約"
+									}
+									}
+								
+								$("#showdiv").html(txt)
+								var text="<tr>"
+								
+								for(var j=0;j<page;j++){
+									text+="<td><a href='#' onclick='clickpage("+(j+1)+")'>"+(j+1)+"</a>"
+									}
+								$("#page").html(text)
+						})
+			}
+			
+			
+			}) 
+		}
+		
+	</script>
+
+</body>
+</html>

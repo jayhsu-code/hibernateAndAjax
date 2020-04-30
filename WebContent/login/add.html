@@ -1,0 +1,322 @@
+<!DOCTYPE HTML>
+<!--
+	Intensify by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+<title>會員註冊系統</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../assets/css/main.css" />
+<style type="text/css">
+form {
+  width:1280px;
+  margin: auto 
+}
+div {
+	margin-left: 10px
+}
+
+h2 {
+	margin-left: 10px;
+	margin-top: 20px
+}
+.ui-datepicker {
+    /*background: transparent;*/
+    background: white;
+}
+</style>
+</head>
+
+<body class="subpage">
+
+	<!-- Header -->
+	<header id="header">
+		<nav class="left">
+			<a href="#menu"><span>Menu</span></a>
+		</nav>
+		<a href="../index.html" class="logo">MasksQuery</a>
+		<nav class="right">
+			<a href="login.html" class="button alt">Log in</a>
+		</nav>
+	</header>
+
+	<!-- Menu -->
+	<nav id="menu">
+		<ul class="links">
+			<li><a href="../index.html">Home</a></li>
+			<li><a href="../generic.html">口罩數量查詢</a></li>
+
+		</ul>
+		<ul class="actions vertical">
+			<li><a href="#" class="button fit">Login</a></li>
+		</ul>
+	</nav>
+
+	<!-- Main -->
+	<section id="main" class="wrapper">
+		<form action="loginAdd" method="post" >
+			<h2>帳號:</h2>
+			<input type="text" id="account" name="account" placeholder="請輸入八個字以上帳號">
+			<div id="accountmsg" style="color: red"></div>
+			<h2>密碼:</h2>
+			<input type="password" id="pwd" name="pwd"
+				placeholder="請輸入八個字以上密碼包含英文與數字">
+			<div id="pwdmsg" style="color: red"></div>
+			<h2>請再次輸入密碼:</h2>
+			<input type="password" id="pwd2" name="pwd2" placeholder="請再輸入一次密碼">
+			<div id="pwd2msg" style="color: red"></div>
+			<h2>使用者姓名:</h2>
+			<input type="text" id="name" name="name" placeholder="請輸入使用者姓名">
+			<div id="namemsg" style="color: red"></div>
+			
+			<h2>地址:</h2>
+			<input type="text" id="address" name="address" placeholder="請輸入送貨住家地址" >
+			<div id="addressmsg" style="color: red"></div>
+			<h2>生日:</h2>
+			<input type="text" id="datepicker" name="birthday"  placeholder="Ex:03/03/1998">
+			<div id="birthmsg" style="color: red"></div>
+			<h2>email:</h2>
+			<input type="text" id="email" name="email">
+			<div id="emailmsg" style="color: red"></div>
+			<h2>性別:</h2>
+			<select name="gender" id="gender">
+				<option value="1" selected>男</option>
+				<option value="2">女</option>	
+			</select> 
+				
+			<input type="button" value="確定" id="submit" style="margin: 30px"><input
+				type="reset" value="取消"> 
+		</form>
+		<button id="test" style="margin-left:50px">一鍵輸入</button>
+
+
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer">
+		<div class="inner">
+			<h2>Get In Touch</h2>
+			<ul class="actions">
+				<li><span class="icon fa-phone"></span> <a href="#">(000)
+						000-0000</a></li>
+				<li><span class="icon fa-envelope"></span> <a href="#">information@untitled.tld</a></li>
+				<li><span class="icon fa-map-marker"></span> 123 Somewhere
+					Road, Nashville, TN 00000</li>
+			</ul>
+		</div>
+		<div class="copyright">
+			&copy; Untitled. Design <a href="https://templated.co">TEMPLATED</a>.
+			Images <a href="https://unsplash.com">Unsplash</a>.
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="../assets/js/jquery.min.js"></script>
+	<script src="../assets/js/jquery.scrolly.min.js"></script>
+	<script src="../assets/js/skel.min.js"></script>
+	<script src="../assets/js/util.js"></script>
+	<script src="../assets/js/main.js"></script>
+	<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+	<script
+		src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	<script type="text/javascript">
+	var account;
+	var pwd;
+	var birth;
+	var address;
+	
+	var email
+	var birthbn=false;
+	var emailbn=false;
+	var addressbn=false
+	var namebn=false;
+	var pwdbn=false;
+	var pwd2bn=false;
+	$("#account").blur(function(){
+		$("#accountmsg").empty();
+		$("#accountmsg").css("color","red")
+		account=$("#account").val()
+		if(account.length<8){
+			$("#accountmsg").html("你的帳號少於八個字")
+			namebn=false
+			
+			}else(
+					$.ajax({
+						url: "accountConfirm",
+						type: "post",
+						data: { "account": account},
+
+						success: function (data) {
+							if(eval(data)){
+							$("#accountmsg").html("已經有人使用這組帳號")
+							namebn=false
+							}else{
+							$("#accountmsg").html("你可以使用這組帳號")
+							$("#accountmsg").css("color","green")
+							namebn=true
+								}
+							}
+					})
+		)
+	
+		})
+		$("#pwd").blur(function(){
+			$("#pwdmsg").css("color","red")
+			var num=0
+			var word=0
+			;
+			$("#pwdmsg").empty()
+			pwd=$("#pwd").val();
+			console.log(pwd)
+			if(pwd.length<8){
+			$("#pwdmsg").html("密碼少於八個字")}
+			else{
+			for (var i=0;i<pwd.length;i++){
+				var code=pwd[i].charCodeAt();
+				console.log(code)
+				if(code>48 && code<57)
+				num=1;
+				else if((code>=65 && code<=90 ) || (code>=97 &&code<=122))
+				word=1;
+				}
+				console.log(word+"word")
+				console.log(num+"num")
+			if ((num+word)==2){
+				$("#pwdmsg").html("密碼符合格式")
+				$("#pwdmsg").css("color","green")
+				pwdbn=true;
+				}
+				else{
+					pwdbn=false;
+					$("#pwdmsg").html("密碼不符合格式")
+					
+			}
+			}
+			})
+			$("#pwd2").blur(function(){
+				$("#pwd2msg").empty()
+				$("#pwd2msg").css("color","red")
+				pwd2=$("#pwd2").val()
+					
+					if(pwd==null || pwd.length==0||pwd==undefined){
+						$("#pwd2msg").html("請先輸入上一行")
+			}else{
+					if($("#pwd2").val()===$("#pwd").val()){
+						$("#pwd2msg").html("密碼符合")
+						$("#pwd2msg").css("color","green")
+					 pwd2bn=true;
+						}else{
+							$("#pwd2msg").html("密碼不符合")
+							pwd2bn=false;
+							}
+			}
+				})
+				$("#address").blur(function(){
+						address=$("#address").val()
+						if(address.length<1){
+							$("#addressmsg").html("請輸入完整地址")
+							$("#addressmsg").css("color","red")
+							addressbn=false
+							}
+						else $("#addressmsg").html("正確")
+						$("#addressmsg").css("color","green")
+						addressbn=true
+					})
+				$("#submit").click(function(){
+					if(pwdbn && pwd2bn && namebn &&addressbn && birthbn && emailbn)
+						{
+						$.ajax(
+								{
+						url:"loginAdd",
+						type:"post",
+						data:{
+							"account":$("#account").val(),"birth":$("#datepicker").val(),
+						"name":$("#name").val(),"pwd":$("#pwd").val(),"address":$("#address").val(),"email":$("#email").val()
+						,"gender":$("#gender").val()
+							},
+							success:function(){
+								window.location.href="login.html"
+									alert("註冊成功")
+							}
+							}
+
+								)
+						}else{
+
+						if(!namebn){
+							alert("請輸入帳號")
+							$("#account").focus();
+							}else if(!pwdbn)
+								{
+								alert("密碼不正確")
+								$("#pwd").focus();
+								}
+							else if(!pwd2bn)
+							{alert("密碼驗證不過")
+							$("#pwd2").focus();}
+							}
+					})
+					$("#datepicker").change(function(){
+						birth=$("#datepicker").val()
+						
+						if(birth[2]=="/" && birth[5]=="/" && birth.length==10){
+							$("#birthmsg").html("生日輸入正確")
+							$("#birthmsg").css("color","green")
+							birthbn=true
+							
+							}else{
+								$("#birthmsg").html("日期格式錯誤")
+								$("#birthmsg").css("color","red")
+								burthbn=false
+									}
+						
+						})
+						$("#email").blur(function(){
+							var mailAt=false
+							email=$("#email").val()
+							
+							for(var i=0 ;i<email.length;i++){
+								if(email[i]=="@"&& email.length>8){
+									
+									mailAt=true
+									
+									}
+								if(mailAt){
+									$("#emailmsg").html("輸入正確")
+									$("#emailmsg").css("color","green")
+									emailbn=true
+								}
+								else{
+									$("#emailmsg").html("輸入錯誤")
+									$("#emailmsg").css("color","red")}
+								emailbn=false
+														}
+							})
+
+
+					  $(function() {
+    					$("#datepicker").datepicker();
+  } );
+	  $("#test").click(function(){
+		  birthbn=true;
+			emailbn=true;
+			addressbn=true
+			namebn=true;
+			 pwdbn=true;
+			pwd2bn=true;
+			$("#account").val("mary12345")
+			$("#datepicker").val("03/12/1990")
+			$("#name").val("jay")
+			$("#pwd").val("abc12345")
+			$("#pwd2").val("abc12345")
+			$("#address").val("台北市板橋區復興南路390號")
+			$("#email").val("test@gmail.com")
+			$("#gender").val("1")
+		  })
+	</script>

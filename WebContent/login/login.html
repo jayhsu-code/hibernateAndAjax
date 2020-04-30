@@ -1,0 +1,157 @@
+ <!DOCTYPE HTML>
+<!--
+	Intensify by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+<title>口罩剩餘數量查詢</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../assets/css/main.css" />
+<style type="text/css">
+form {
+	width:1200px
+	;margin: auto	
+}
+</style>
+</head>
+
+<body class="subpage">
+
+	<!-- Header -->
+	<header id="header">
+		<nav class="left">
+			<a href="#menu"><span>Menu</span></a>
+		</nav>
+		<a href="../index.html" class="logo">MasksQuery</a>
+		<nav class="right">
+			<a href="login.html" class="button alt">Log in</a>
+		</nav>
+	</header>
+
+	<!-- Menu -->
+	<nav id="menu">
+		<ul class="links">
+			<li><a href="../index.html">Home</a></li>
+			<li><a href="../generic.html">口罩數量查詢</a></li>
+
+		</ul>
+		<ul class="actions vertical">
+			<li><a href="#" class="button fit">Login</a></li>
+		</ul>
+	</nav>
+
+	<!-- Main -->
+	<section id="main" class="wrapper">
+		<form action="loginif" method="post">
+			<h2>帳號:</h2>
+			<input type="text" id="name">
+			<div id="accountmsg" style="color: red"></div>
+			<h2>密碼:</h2>
+			<input type="password" id="pwd">
+			<div id="pwdmsg" style="color: red"></div>
+			<input type="button" value="確定" id="submit" style="margin: 30px"><input
+				type="reset" style="margin-right:30px" value="取消"><a href="add.html" >註冊新會員</a>
+
+		</form>
+
+
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer">
+		<div class="inner">
+			<h2>Get In Touch</h2>
+			<ul class="actions">
+				<li><span class="icon fa-phone"></span> <a href="#">(000)
+						000-0000</a></li>
+				<li><span class="icon fa-envelope"></span> <a href="#">information@untitled.tld</a></li>
+				<li><span class="icon fa-map-marker"></span> 123 Somewhere
+					Road, Nashville, TN 00000</li>
+			</ul>
+		</div>
+		<div class="copyright">
+			&copy; Untitled. Design <a href="https://templated.co">TEMPLATED</a>.
+			Images <a href="https://unsplash.com">Unsplash</a>.
+		</div>
+	</footer>
+
+	<!-- Scripts -->
+	<script src="../assets/js/jquery.min.js"></script>
+	<script src="../assets/js/jquery.scrolly.min.js"></script>
+	<script src="../assets/js/skel.min.js"></script>
+	<script src="../assets/js/util.js"></script>
+	<script src="../assets/js/main.js"></script>
+	<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+	<script
+		src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script type="text/javascript">
+		var pwd;
+		var name;
+		$("#name").blur(function () {
+			name = $("#name").val()
+			$("#accountmsg").empty()
+
+			if (name.length < 8) {
+				$("#accountmsg").html("輸入少於8個字")
+
+			}
+			else {
+
+				$("#accountmsg").empty()
+			}
+		})
+		$("#pwd").blur(function () {
+			pwd = $("#pwd").val()
+
+			$("#pwdmsg").empty()
+
+		})
+		$("#submit").click(function () {
+			name = $("#name").val()
+			pwd = $("#pwd").val()
+		
+			$.ajax({
+
+				url: "loginif",
+				type: "post",
+				data: { "name": name, "pwd": pwd },
+
+				success: function (data) {
+					if (eval(data)) {
+						
+						$.cookie("name",$("#name").val(),{expires:7,path:'/secondThematic'})
+						
+						
+						window.location.href="../generic.html" 
+							alert("登入成功")
+					} else {
+						$("#pwdmsg").html("你的帳號或密碼輸入錯誤")
+					}
+				}
+
+			})
+
+
+		})
+	if($.cookie("name")!="null")
+	{
+	
+	$("#loginout").html("<span>hi ! "+$.cookie("name")+" </span>"+"<a href='#' id='loginexit' class='button alt'>Log out</a>"+"<a href='login/edit.html'>(修改)</a>")
+	}else{
+		$("#loginout").html("<a href='login/login.html' class='button alt'>Log in</a>")
+		
+		}
+$("#loginexit").click(function(){
+	$.cookie("name","null")
+	alert("已登出")
+	window.location.href="login/login.html"
+	})
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<!--
+	Intensify by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+
+<head>
+<title>會員資料修改</title>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../assets/css/main.css" />
+<style type="text/css">
+form {
+	width:1200px
+	;margin: auto	
+}
+img{
+	width:50px;
+	
+}
+span{
+}
+	
+#td1{
+	width:40px
+}
+#td2{width:30px}
+</style>
+</head>
+
+<body class="subpage">
+
+	<!-- Header -->
+	<header id="header">
+		<nav class="left">
+			<a href="#menu"><span>Menu</span></a>
+		</nav>
+		<a href="../index.html" class="logo">memberdata</a>
+		<nav class="right" id="loginout">
+			
+		</nav>
+	</header>
+
+	<!-- Menu -->
+	<nav id="menu">
+		<ul class="links">
+			<li><a href="../index.html">Home</a></li>
+			<li><a href="../generic.html">口罩數量查詢</a></li>
+
+		</ul>
+		<ul class="actions vertical" >
+			<li id="loginout"></li>
+		</ul>
+	</nav>
+	<br>
+	<br>
+	<br>
+	<form action="loginpass" method="post"><table id="member">
+	<tr><td id='td1'>ID:<td><input type='hidden' id='userid' name="userid" ><img  src='../images/pic01.jpg'>
+	<tr><td id='td1'>帳號：<td><input type='text' id='account' name="account" readonly='readonly' >
+	<tr><td id='td1'>密碼：<td><input id='pwd' name="pwd" type='text'>
+	<tr><td id='td1'>姓名：<td><input id='name' name="name" type='text' readonly='readonly'>
+	<tr><td id='td1'>生日：<td><input id='birth' name="birth" type='text' readonly='readonly'>
+	<tr><td id='td1'>email：<td><input id='email' name="email" type='text'readonly='readonly'>
+	<tr><td id='td1'>地址：<td><input  type='text' name="address" id='address' >
+	<tr><td id='td1'><td><input type='hidden' name="gender" id='gender' readonly='readonly'>
+	<tr><td><input type="submit" id="#submit" value="修改"><td><div id="msg"></div></table></form>
+	
+	<footer id="footer">
+		<div class="inner">
+			<h2>Get In Touch</h2>
+			<ul class="actions">
+				<li><span class="icon fa-phone"></span> <a href="#">(000)
+						000-0000</a></li>
+				<li><span class="icon fa-envelope"></span> <a href="#">information@untitled.tld</a></li>
+				<li><span class="icon fa-map-marker"></span> 123 Somewhere
+					Road, Nashville, TN 00000</li>
+			</ul>
+		</div>
+		<div class="copyright">
+			&copy; Untitled. Design <a href="https://templated.co">TEMPLATED</a>.
+			Images <a href="https://unsplash.com">Unsplash</a>.
+		</div>
+	</footer>
+		<script src="../assets/js/jquery.min.js"></script>
+	<script src="../assets/js/jquery.scrolly.min.js"></script>
+	<script src="../assets/js/skel.min.js"></script>
+	<script src="../assets/js/util.js"></script>
+	<script src="../assets/js/main.js"></script>
+	<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script>
+	<script
+		src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+		<script type="text/javascript">
+		var member=$.cookie("name")
+		var name
+		var email
+		var address
+		var gender
+		var password
+		var account
+		var birth
+		var userid
+		$.ajax({
+			url:"loginedit",
+			type:"post",
+			data:{"account":member},
+		success: function(data){
+			jdata=JSON.parse(data)
+			for(var i=0;i<jdata.length;i++){
+				 name=jdata[i].name
+				 email=jdata[i].email
+				 address=jdata[i].address
+				 gender=jdata[i].gender
+				 password=jdata[i].password
+				 account=jdata[i].account
+				 birth=jdata[i].birth
+				 userid=jdata[i].id
+				}
+			$("#account").val(account)
+			$("#address").val(address)
+			$("#pwd").val(password)
+			$("#birth").val(birth)
+			$("#name").val(name)
+			$("#email").val(email)
+			$("#gender").val(gender)
+			$("#userid").val(userid)
+				
+			
+			}
+			
+			})
+			$("#submit").click(function(){
+				$("msg").html("資料修改成功")
+				})
+			
+	if($.cookie("name")!="null")
+	{
+	
+	$("#loginout").html("<img src='../images/pic01.jpg'>"+" "+$.cookie("name")+"<a href='../login/edit.html'>(修改)</a>"+"</span>"+"<a href='#' id='loginexit' class='button alt'>Log out</a>")
+	}else{
+		$("#loginout").html("<a href='../login/login.html' class='button alt'>Log in</a>")
+		
+		}
+$("#loginexit").click(function(){
+	$.cookie("name","null",{path:'/secondThematic'})
+	alert("已登出")
+	window.location.href="login.html"
+	})
+
+	
+		</script>
+		<script type="text/javascript">
+	
+		</script>
+	</body>
+	</html>
